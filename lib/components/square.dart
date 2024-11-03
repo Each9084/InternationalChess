@@ -6,18 +6,27 @@ import 'package:flutter/material.dart';
 class Square extends StatelessWidget {
   final bool isWhite;
   final ChessPiece? piece;
+  final bool isSelected;
 
-  const Square({super.key, required this.isWhite, required this.piece});
+  const Square(
+      {super.key,
+      required this.isWhite,
+      required this.piece,
+      required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
+
+    Color?squareColor;
+
+
     return Container(
       color: isWhite ? foregroundColor : backgroundColor,
       child: piece != null
           ? Image.asset(
               piece!.imagePath,
-              color: piece!.isWhite?Colors.white:Colors.black,
-      )
+              color: piece!.isWhite ? Colors.white : Colors.black,
+            )
           : null,
     );
   }
