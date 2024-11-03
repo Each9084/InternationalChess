@@ -7,27 +7,38 @@ class Square extends StatelessWidget {
   final bool isWhite;
   final ChessPiece? piece;
   final bool isSelected;
+  final void Function()? onTap;
 
-  const Square(
-      {super.key,
-      required this.isWhite,
-      required this.piece,
-      required this.isSelected});
+
+  const Square({super.key,
+    required this.isWhite,
+    required this.piece,
+    required this.isSelected,
+    required this.onTap
+  });
 
   @override
   Widget build(BuildContext context) {
-
     Color?squareColor;
 
+    //if selected, square will be green
+    if (isSelected) {
+      squareColor = Colors.green;
+    } else { //otherwise will be white or black
+      squareColor = isWhite ? foregroundColor : backgroundColor;
+    }
 
-    return Container(
-      color: isWhite ? foregroundColor : backgroundColor,
-      child: piece != null
-          ? Image.asset(
-              piece!.imagePath,
-              color: piece!.isWhite ? Colors.white : Colors.black,
-            )
-          : null,
+    return GestureDetector(
+      onTap:onTap,
+      child: Container(
+        color: squareColor,
+        child: piece != null
+            ? Image.asset(
+          piece!.imagePath,
+          color: piece!.isWhite ? Colors.white : Colors.black,
+        )
+            : null,
+      ),
     );
   }
 }

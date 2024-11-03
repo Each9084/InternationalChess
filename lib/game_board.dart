@@ -20,6 +20,18 @@ class _GameBoardState extends State<GameBoard> {
 
   late List<List<ChessPiece?>> board;
 
+  //The currently selected piece on the chessboard,
+  //if no piece is selected ,this is null
+  ChessPiece?selectedPiece;
+
+  //The row index of the selected piece
+  //Default value -1 indicated no piece is currently
+  int selectedRow = -1;
+
+  //The col index of the selected piece
+  //Default value -1 indicated no piece is currently
+  int selectedCol = -1;
+
   @override
   void initState() {
     super.initState();
@@ -135,6 +147,21 @@ class _GameBoardState extends State<GameBoard> {
     imagePath: 'lib/images/pawn.png',
   );*/
 
+  //USER SELECTED A PIECE
+  void pieceSelected(int row,int col){
+    setState(() {
+      // selected a piece if there is a piece in that position
+      if (board[row][col]!=null) {//if there is not null,
+        // means there is a piece in this position
+        //let us select it
+        selectedPiece = board[row][col];
+        selectedRow = row;
+        selectedCol = col;
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,9 +175,13 @@ class _GameBoardState extends State<GameBoard> {
           //get the row and column position of this square
           int row = index ~/ 8;
           int col = index % 8;
+          //check if this square is selected
+
+          bool isSelected = selectedRow == row&&selectedCol==col;
           return Square(
             isWhite: isWhiteT(index),
             piece: board[row][col],
+            isSelected: isSelected, onTap: () { pieceSelected(row, col); },
           );
           /*if(index%2==0){
            return Square(isWhite: false);
