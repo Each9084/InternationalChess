@@ -22,7 +22,7 @@ class _GameBoardState extends State<GameBoard> {
 
   //The currently selected piece on the chessboard,
   //if no piece is selected ,this is null
-  ChessPiece?selectedPiece;
+  ChessPiece? selectedPiece;
 
   //The row index of the selected piece
   //Default value -1 indicated no piece is currently
@@ -31,6 +31,10 @@ class _GameBoardState extends State<GameBoard> {
   //The col index of the selected piece
   //Default value -1 indicated no piece is currently
   int selectedCol = -1;
+
+  //a list of valid moves for the currently selected piece
+  //each move is represented as a list with 2 elements:row and col
+  List<List<int>> validMoves = [];
 
   @override
   void initState() {
@@ -148,19 +152,59 @@ class _GameBoardState extends State<GameBoard> {
   );*/
 
   //USER SELECTED A PIECE
-  void pieceSelected(int row,int col){
+  void pieceSelected(int row, int col) {
     setState(() {
       // selected a piece if there is a piece in that position
-      if (board[row][col]!=null) {//if there is not null,
+      if (board[row][col] != null) {
+        //if there is not null,
         // means there is a piece in this position
         //let us select it
         selectedPiece = board[row][col];
         selectedRow = row;
         selectedCol = col;
       }
+
+      //选择棋子后 计算有效的动作,将调用validMoves这个方法
+      //计算有效动作,调用这个方法
+      validMoves =
+          calculateRawValidMoves(selectedRow, selectedCol, selectedPiece);
     });
   }
 
+  //calculate raw valid moves 计算有效的移动,有些动作时非法的,负责非法动作的是另一个模块
+  //calculateRawValidMoves里我们需要知道位置
+  List<List<int>> calculateRawValidMoves(
+      int row, int col, ChessPiece? piece) {
+    //创建一个候选移动列表
+    List<List<int>> candidateMoves = [];
+
+    //基于颜色的directions
+    //如果是白色,那就减少,向上移动;如果是黑色,就增加,向下移动;
+    int direction = piece!.isWhite?-1:1;
+
+    //check当前棋子的类型
+    switch(piece.type){
+      case ChessPieceType.pawn:
+        //pawns向前移动 前提是没有阻挡
+
+      //初始化时,可以向前走两格
+
+      //捕获对角线的棋子
+      break;
+      case ChessPieceType.rook:
+        break;
+      case ChessPieceType.knight:
+        break;
+      case ChessPieceType.bishop:
+        break;
+      case ChessPieceType.queen:
+        break;
+      case ChessPieceType.king:
+        break;
+      default:
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,11 +221,14 @@ class _GameBoardState extends State<GameBoard> {
           int col = index % 8;
           //check if this square is selected
 
-          bool isSelected = selectedRow == row&&selectedCol==col;
+          bool isSelected = selectedRow == row && selectedCol == col;
           return Square(
             isWhite: isWhiteT(index),
             piece: board[row][col],
-            isSelected: isSelected, onTap: () { pieceSelected(row, col); },
+            isSelected: isSelected,
+            onTap: () {
+              pieceSelected(row, col);
+            },
           );
           /*if(index%2==0){
            return Square(isWhite: false);
