@@ -35,6 +35,7 @@ class Square extends StatelessWidget {
         child: piece != null
             ? Image.asset(
           piece!.imagePath,
+          //在这里绑定的 颜色判定
           color: piece!.isWhite ? Colors.white : Colors.black,
         )
             : null,

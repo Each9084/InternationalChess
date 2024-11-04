@@ -185,11 +185,23 @@ class _GameBoardState extends State<GameBoard> {
     //check当前棋子的类型
     switch(piece.type){
       case ChessPieceType.pawn:
-        //pawns向前移动 前提是没有阻挡
 
-      //初始化时,可以向前走两格
-
-      //捕获对角线的棋子
+      //1.pawns向前移动 前提是没有阻挡
+        //check if now is in the board,因为pawn只会纵向移动,所以row需要加上移动的方向
+        if ((isInBoard(row+direction, col)&& board[row+direction][col]==null)) {
+          //然后满足条件的话加入到候选当中
+          candidateMoves.add([row+direction,col]);
+        }
+      //2.初始化时,可以向前走两格
+        //对于黑色棋子 和白色棋子进行 使用或进行判断
+      if ((row==1&&!piece.isWhite||row==1&&piece.isWhite)) {
+        //需要判断是否在棋盘上,以及在棋盘后,目标位置是否为空,为空理论上才可以移动
+        if ((isInBoard(row+2, col)&&board[row+2][col]==null)) {
+          //向前移动2格,仅一次
+          candidateMoves.add([row+2*direction,col]);
+        }
+      }
+      //3.捕获对角线的棋子
       break;
       case ChessPieceType.rook:
         break;
