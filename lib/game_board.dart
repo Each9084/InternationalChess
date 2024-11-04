@@ -202,6 +202,7 @@ class _GameBoardState extends State<GameBoard> {
         }
       }
       //3.捕获对角线的棋子
+
       break;
       case ChessPieceType.rook:
         break;
@@ -214,8 +215,9 @@ class _GameBoardState extends State<GameBoard> {
       case ChessPieceType.king:
         break;
       default:
-
     }
+    //临时加上
+    return candidateMoves;
   }
 
   @override
